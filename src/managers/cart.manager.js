@@ -30,7 +30,20 @@ class CartManager {
 
       if (!cart) throw new Error("Cart not found");
 
-      return cart;
+      const productsDetail = await Promise.all(
+        cart.products.map(async (cartProduct) => {
+          const product = await productManager.getProductById(cartProduct.id);
+          return {
+            ...product,
+            quantity: cartProduct.quantity
+          };
+        })
+      );
+
+      return {
+        ...cart,
+        products: productsDetail
+      }
     } catch (e) {
       throw new Error(e.message);
     }
@@ -57,8 +70,11 @@ class CartManager {
 
   async addProductToCart(cartId, productId) {
     try {
+
       const cart = await this.getCartById(cartId);
       const product = await productManager.getProductById(productId);
+
+      if(!product.status) throw new Error("The product is deleted");
 
       const existingProduct = cart["products"].find((p) => p.id === productId);
 

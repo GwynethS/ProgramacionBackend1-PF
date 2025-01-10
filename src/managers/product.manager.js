@@ -35,6 +35,20 @@ class ProductManager {
     }
   }
 
+  async isProductCodeExists(code) {
+    try {
+      const products = await this.getAllProducts();
+
+      const product = products.find((p) => p.code === code);
+
+      if (!product) return false;
+
+      return true;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
   async createProduct(data) {
     try {
       const product = {
@@ -48,6 +62,10 @@ class ProductManager {
         category: data.category,
         thumbnails: data.thumbnails || [],
       };
+
+      const existsCode = await this.isProductCodeExists(product.code);
+
+      if (existsCode) throw new Error(`The product code already exists`);
 
       const products = await this.getAllProducts();
 
@@ -69,6 +87,14 @@ class ProductManager {
 
       if (productIndex === -1) throw new Error(`Product not found`);
 
+      if(!products[productIndex].status) throw new Error("The product is deleted");
+
+      if (data.code && data.code != products[productIndex].code) {
+        const existsCode = await this.isProductCodeExists(data.code);
+
+        if (existsCode) throw new Error(`The product code already exists`);
+      }
+
       products[productIndex] = { ...products[productIndex], ...data };
 
       await fs.promises.writeFile(this.path, JSON.stringify(products));
@@ -81,14 +107,17 @@ class ProductManager {
 
   async deleteProduct(id) {
     try {
-      const product = await this.getProductById(id);
       const products = await this.getAllProducts();
 
-      const newProducts = products.filter((p) => p.id != id);
+      const productIndex = products.findIndex((p) => p.id === id);
 
-      await fs.promises.writeFile(this.path, JSON.stringify(newProducts));
+      if (productIndex === -1) throw new Error(`Product not found`);
 
-      return product;
+      products[productIndex] = { ...products[productIndex], status: false };
+
+      await fs.promises.writeFile(this.path, JSON.stringify(products));
+
+      return products[productIndex];
     } catch (e) {
       throw new Error(e.message);
     }
