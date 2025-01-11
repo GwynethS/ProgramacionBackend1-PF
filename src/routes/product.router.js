@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { productManager } from "../managers/product.manager.js";
+import { socketServer } from "../server.js";
 
 const router = Router();
 
@@ -61,7 +62,12 @@ router.post("/", async (req, res) => {
         .json({ message: "The 'category' field is required." });
     }
 
-    res.status(200).json(await productManager.createProduct(req.body));
+    const newProduct = await productManager.createProduct(req.body);
+
+    const updatedProductList = await productManager.getAllProducts();
+    socketServer.emit("realTimeProductList", updatedProductList);
+
+    res.status(200).json(newProduct);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
@@ -87,7 +93,12 @@ router.delete("/:pid", async (req, res) => {
   try {
     const { pid } = req.params;
 
-    res.status(200).json(await productManager.deleteProduct(pid));
+    const deletedProduct = await productManager.deleteProduct(pid)
+
+    const updatedProductList = await productManager.getAllProducts();
+    socketServer.emit("realTimeProductList", updatedProductList);
+
+    res.status(200).json(deletedProduct);
   } catch (e) {
     res.status(500).json({ message: e.message });
   }

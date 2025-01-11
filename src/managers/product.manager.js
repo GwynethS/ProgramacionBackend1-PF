@@ -12,7 +12,7 @@ class ProductManager {
       if (fs.existsSync(this.path)) {
         const products = await fs.promises.readFile(this.path, "utf-8");
 
-        return JSON.parse(products);
+        return JSON.parse(products).filter((p) => p.status);
       } else {
         return [];
       }
@@ -87,7 +87,8 @@ class ProductManager {
 
       if (productIndex === -1) throw new Error(`Product not found`);
 
-      if(!products[productIndex].status) throw new Error("The product is deleted");
+      if (!products[productIndex].status)
+        throw new Error("The product is deleted");
 
       if (data.code && data.code != products[productIndex].code) {
         const existsCode = await this.isProductCodeExists(data.code);
