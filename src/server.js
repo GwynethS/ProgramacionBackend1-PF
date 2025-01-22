@@ -2,8 +2,6 @@ import express from "express";
 import handlebars from "express-handlebars";
 import productRouter from "./routes/product.router.js";
 import cartRouter from "./routes/cart.router.js";
-import homeRouter from "./routes/home.router.js";
-import realTimeProductsRouter from "./routes/realtimeproducts.router.js";
 import { __dirname } from "./utils.js";
 import { Server } from "socket.io";
 
@@ -21,10 +19,25 @@ app.use("/static", express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+app.get("/home", async (req, res) => {
+  try{
+    const productList = await productManager.getAllProducts();
+
+    res.render('home', {productList});
+
+  }catch(e){
+    res.status(500).send('An error occurred while trying to get products:' + e.message);
+  }
+});
+
+app.get("/realtimeproducts", async (req, res) => {
+  res.render('realTimeProducts');
+});
+
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
-app.use("/home", homeRouter);
-app.use("/realtimeproducts", realTimeProductsRouter);
+
 
 const httpServer = app.listen(PORT, () => {
   console.log("Server on port 8080");
