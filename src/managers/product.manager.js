@@ -5,7 +5,6 @@ export class ProductManager {
 
   async findByQuery(query = {}) {
     try {
-      /* const result = await this.model.find(query).explain("executionStats"); */
       const result = await this.model.find(query);
 
       return result;

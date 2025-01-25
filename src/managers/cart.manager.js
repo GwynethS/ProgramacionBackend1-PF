@@ -1,81 +1,55 @@
+import { ProductModel } from "../models/product.model.js";
 export class CartManager {
-  constructor(path) {
-    this.path = path;
+  constructor(model) {
+    this.model = model;
   }
 
-  /* async getAllCarts() {
+  async findByQuery(query = {}) {
     try {
-      if (fs.existsSync(this.path)) {
-        const cartProducts = await fs.promises.readFile(this.path, "utf-8");
+      const result = await this.model.find(query);
 
-        return JSON.parse(cartProducts);
-      } else {
-        return [];
-      }
+      return result;
     } catch (e) {
-      throw new Error(e.message);
+      return null;
     }
   }
 
-  async getCartById(id) {
+  async findById(id) {
     try {
-      const carts = await this.getAllCarts();
+      const result = await this.model.findById(id).populate("products.product");
 
-      const cart = carts.find((c) => c.id === id);
-
-      if (!cart) throw new Error("Cart not found");
-
-      const productsDetail = await Promise.all(
-        cart.products.map(async (cartProduct) => {
-          const product = await productManager.getProductById(cartProduct.id);
-          return {
-            ...product,
-            quantity: cartProduct.quantity
-          };
-        })
-      );
-
-      return {
-        ...cart,
-        products: productsDetail
-      }
+      return result;
     } catch (e) {
-      throw new Error(e.message);
+      return null;
     }
   }
 
-  async createCart() {
+  async add() {
     try {
-      const cart = {
-        id: uuidv4(),
-        products: [],
-      };
+      const result = await this.model.create({ products: [] });
 
-      const carts = await this.getAllCarts();
-
-      carts.push(cart);
-
-      await fs.promises.writeFile(this.path, JSON.stringify(carts));
-
-      return cart;
+      return result;
     } catch (e) {
-      throw new Error(e.message);
+      return { error: true, message: e.message };
     }
   }
 
   async addProductToCart(cartId, productId) {
     try {
+      const cart = await this.model.findById(cartId);
+      const product = await ProductModel.findById(productId);
 
-      const cart = await this.getCartById(cartId);
-      const product = await productManager.getProductById(productId);
+      if (!cart) throw new Error("Cart not found");
 
-      if(!product.status) throw new Error("The product is deleted");
+      if (!product) throw new Error("Product not found");
 
-      const existingProduct = cart["products"].find((p) => p.id === productId);
+      const existingProduct = cart["products"].find(
+        (p) => p["product"].toString() === productId
+      );
 
       if (!existingProduct) {
         const insertProduct = {
-          id: productId,
+          product: productId,
           quantity: 1,
         };
 
@@ -84,15 +58,13 @@ export class CartManager {
         existingProduct.quantity += 1;
       }
 
-      const carts = await this.getAllCarts();
+      const cartUpdated = await this.model
+        .findByIdAndUpdate(cartId, cart, { new: true })
+        .populate("products.product");
 
-      const updatedCarts = carts.map((c) => (c.id === cartId ? cart : c));
-
-      await fs.promises.writeFile(this.path, JSON.stringify(updatedCarts));
-
-      return cart;
+      return cartUpdated;
     } catch (e) {
-      throw new Error(e.message);
+      return { error: true, message: e.message };
     }
-  } */
+  }
 }

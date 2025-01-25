@@ -14,8 +14,6 @@ router.get("/", async (req, res) => {
     limit = parseInt(limit, 10);
     page = parseInt(page, 10);
 
-    console.log(filters);
-
     const sortOptions =
       sort === "asc" ? { price: 1 } : sort === "desc" ? { price: -1 } : {};
 
@@ -39,11 +37,15 @@ router.get("/", async (req, res) => {
 
     const prevQueryParams = new URLSearchParams(queryParams);
     prevQueryParams.set("page", result.prevPage);
-    const prevLink = result.hasPrevPage ? `${baseUrl}/?${prevQueryParams.toString()}` : null;
+    const prevLink = result.hasPrevPage
+      ? `${baseUrl}/?${prevQueryParams.toString()}`
+      : null;
 
     const nextQueryParams = new URLSearchParams(queryParams);
     nextQueryParams.set("page", result.nextPage);
-    const nextLink = result.hasNextPage ? `${baseUrl}/?${nextQueryParams.toString()}` : null;
+    const nextLink = result.hasNextPage
+      ? `${baseUrl}/?${nextQueryParams.toString()}`
+      : null;
 
     res.status(200).json({
       status: "success",
@@ -58,21 +60,8 @@ router.get("/", async (req, res) => {
       nextLink,
     });
   } catch (error) {
-    console.error("Error fetching products:", error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
-
-router.get("/filter", async (req, res) => {
-  const result = await model.findByQuery(req.query);
-
-  if (!result) {
-    return res
-      .status(404)
-      .json({ message: "Can't get products", payload: result });
-  }
-
-  res.status(200).json({ payload: result });
 });
 
 router.get("/:pid", async (req, res) => {
