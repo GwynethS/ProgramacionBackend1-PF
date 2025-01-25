@@ -3,24 +3,26 @@ const socket = io();
 document
   .getElementById("addProductForm")
   .addEventListener("submit", async (e) => {
-    event.preventDefault();
+    e.preventDefault();
 
-    const productData = {
-      title: document.getElementById("title").value,
-      description: document.getElementById("description").value,
-      code: document.getElementById("code").value,
-      price: parseFloat(document.getElementById("price").value),
-      stock: parseInt(document.getElementById("stock").value),
-      category: document.getElementById("category").value,
-    };
+    const formData = new FormData();
+
+    formData.append("title", document.getElementById("title").value);
+    formData.append("description", document.getElementById("description").value);
+    formData.append("code", document.getElementById("code").value);
+    formData.append("price", parseFloat(document.getElementById("price").value));
+    formData.append("stock", parseInt(document.getElementById("stock").value));
+    formData.append("category", document.getElementById("category").value);
+
+    const thumbnails = document.getElementById("thumbnails").files;
+    for (let i = 0; i < thumbnails.length; i++) {
+      formData.append("thumbnails", thumbnails[i]);
+    }
 
     try {
       const response = await fetch("/api/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(productData),
+        body: formData,
       });
 
       if (response.ok) {
@@ -48,7 +50,9 @@ socket.on("realTimeProductList", (productList) => {
 
     card.innerHTML = `
       <div class="card-header">
-        <button class="delete-btn" data-id="${product.id}" id="btn-delete-${product.id}" type="button">Eliminar</button>
+        <button class="delete-btn" data-id="${product._id}" id="btn-delete-${
+      product._id
+    }" type="button">Eliminar</button>
       </div>
 
       <h2 class="card-title">${product.title}</h2>
@@ -73,7 +77,7 @@ socket.on("realTimeProductList", (productList) => {
 
     productListElement.appendChild(card);
 
-    const btnDelete = document.getElementById(`btn-delete-${product.id}`);
+    const btnDelete = document.getElementById(`btn-delete-${product._id}`);
 
     btnDelete.addEventListener("click", (e) => {
       const productId = e.target.getAttribute("data-id");

@@ -1,14 +1,9 @@
-import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
-import path from "path";
-import { productManager } from "./product.manager.js";
-
-class CartManager {
+export class CartManager {
   constructor(path) {
     this.path = path;
   }
 
-  async getAllCarts() {
+  /* async getAllCarts() {
     try {
       if (fs.existsSync(this.path)) {
         const cartProducts = await fs.promises.readFile(this.path, "utf-8");
@@ -99,9 +94,5 @@ class CartManager {
     } catch (e) {
       throw new Error(e.message);
     }
-  }
+  } */
 }
-
-export const cartManager = new CartManager(
-  path.join(process.cwd(), "src/data/carts.json")
-);
