@@ -1,0 +1,41 @@
+<div class="d-flex justify-content-between align-items-center">
+  <h1>My Cart</h1>
+
+  <a href="/products" class="text-reset">
+    <i class="fa-solid fa-chevron-left"></i>
+    Go back
+  </a>
+</div>
+
+<div class="mt-5">
+  <div class="row g-5" id="cart-list">
+    {{#each cart.products}}
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{this.product.title}}</h5>
+            <p class="card-text">{{this.product.description}}</p>
+            <p><strong>Price:</strong> ${{this.product.price}}</p>
+            <p><strong>Quantity:</strong> {{this.quantity}}</p>
+            
+            {{#if product.thumbnails.length}}
+              <div class="card-images">
+                <strong>Imágenes:</strong>
+                <ul>
+                  {{#each product.thumbnails}}
+                    <li><img
+                        src="{{this}}"
+                        alt="Imagen del producto"
+                        class="product-image"
+                      /></li>
+                  {{/each}}
+                </ul>
+              </div>
+            {{/if}}
+          </div>
+        </div>
+
+      </div>
+    {{/each}}
+  </div>
+</div>

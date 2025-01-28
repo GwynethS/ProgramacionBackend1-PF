@@ -36,7 +36,7 @@ document
         alert("Error: " + errorData.message);
       }
     } catch (error) {
-      console.error("Error al crear el producto:", error);
+      console.log("Error al crear el producto:", error);
     }
   });
 
@@ -100,6 +100,6 @@ async function deleteProduct(productId) {
       alert("Error al eliminar el producto: " + errorData.message);
     }
   } catch (error) {
-    console.error("Error al eliminar el producto:", error);
+    console.log("Error al eliminar el producto:", error);
   }
 }

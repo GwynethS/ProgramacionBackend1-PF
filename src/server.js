@@ -2,12 +2,12 @@ import express from "express";
 import handlebars from "express-handlebars";
 import productRouter from "./routes/product.router.js";
 import cartRouter from "./routes/cart.router.js";
+import viewsRouter from "./routes/views.router.js";
 import { __dirname } from "./utils.js";
 import { Server } from "socket.io";
 
 import { ProductModel } from "./models/product.model.js";
 import { mongoConnection } from "./connection/mongo.js";
-import { model } from "mongoose";
 
 const PORT = 8080;
 const app = express();
@@ -23,23 +23,7 @@ app.use("/static", express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/home", async (req, res) => {
-
-  const result = await ProductModel.find().lean();
-  
-  if (!result) {
-    return res
-      .status(404)
-      .json({ message: "Can't get products", payload: result });
-  }
-
-  res.render("home", { productList: result });
-});
-
-app.get("/realtimeproducts", async (req, res) => {
-  res.render("realTimeProducts");
-});
-
+app.use("/", viewsRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 
@@ -54,7 +38,7 @@ socketServer.on("connection", async (socket) => {
 
   const productList = await ProductModel.find().lean();
 
-  if(!productList) productList = [];
+  if (!productList) productList = [];
 
   socket.emit("realTimeProductList", productList);
 
@@ -70,4 +54,3 @@ socketServer.on("connection", async (socket) => {
     console.log("A user disconnected");
   });
 });
-

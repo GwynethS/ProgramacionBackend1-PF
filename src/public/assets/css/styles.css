@@ -1,34 +1,38 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
   margin: 0;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
-.product-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center;
+a {
+  text-decoration: none;
 }
 
 .card {
-  background-color: white;
-  border-radius: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  width: 16rem;
-  text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-10px);
 }
 
-.card-header {
-  position: relative;
-  z-index: 1000;
+#product-list .card {
+  height: 30rem;
+  cursor: pointer;
+}
+
+#product-list .card-img-top {
+  height: 15rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+#product-list .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .delete-btn {
@@ -48,7 +52,7 @@ body {
   color: darkred;
 }
 
-.card-title {
+/* .card-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin: 2rem 0;
@@ -57,13 +61,13 @@ body {
 .card p {
   font-size: 1rem;
   margin: 0.5rem 0;
-}
+} */
 
 .card-images ul {
   padding: 0;
   list-style-type: none;
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -73,11 +77,21 @@ body {
 }
 
 .product-image {
-  width: 6.5rem;
-  height: 6.5rem;
   object-fit: cover;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  object-position: center;
+}
+
+#product-detail .product-image {
+  width: 10rem;
+  height: 10rem;
+}
+
+#cart-list .product-image {
+  width: 6.5rem;
+  height: 6.5rem;
 }
 
 form {
@@ -98,7 +112,8 @@ form label {
   font-weight: bold;
 }
 
-form input, textarea {
+form input,
+textarea {
   width: 100%;
   padding: 8px;
   margin-top: 5px;
@@ -109,7 +124,7 @@ form input, textarea {
 
 form button {
   padding: 0.7rem 1rem;
-  background-color: #A1B4FF;
+  background-color: #a1b4ff;
   color: white;
   border: none;
   border-radius: 4px;
@@ -119,4 +134,3 @@ form button {
 form button:hover {
   background-color: #8da0ed;
 }
-
