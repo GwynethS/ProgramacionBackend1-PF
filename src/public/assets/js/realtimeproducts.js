@@ -57,6 +57,7 @@ socket.on("realTimeProductList", (productList) => {
     card.innerHTML = `
       <div class="card">
         <div class="card-body">
+        
           <h4 class="card-title text-center">${product.title}</h4>
           <div class="mt-3">
             <p><strong>Description:</strong> ${product.description}</p>
@@ -79,9 +80,13 @@ socket.on("realTimeProductList", (productList) => {
                 .join("")}
             </div>
           </div>
-          <button class="btn btn-danger w-100 mt-3 delete-btn" data-id="${
-            product._id
-          }" id="btn-delete-${product._id}" type="button">Eliminar</button>
+          <div class="text-end">
+            <button class="btn btn-danger mt-4 delete-btn" data-id="${
+              product._id
+            }" id="btn-delete-${product._id}" type="button">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
         </div>
       </div>
     `;
