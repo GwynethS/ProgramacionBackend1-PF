@@ -1,10 +1,5 @@
-<div class="d-flex justify-content-between align-items-center">
-  <h1>My Cart</h1>
-
-  <a href="/products" class="text-reset">
-    <i class="fa-solid fa-chevron-left"></i>
-    Go back
-  </a>
+<div class="mt-5 mb-5 text-center">
+  <h2>MY CART</h2>
 </div>
 
 <div class="mt-5">
@@ -17,19 +12,20 @@
             <p class="card-text">{{this.product.description}}</p>
             <p><strong>Price:</strong> ${{this.product.price}}</p>
             <p><strong>Quantity:</strong> {{this.quantity}}</p>
-            
+
             {{#if product.thumbnails.length}}
-              <div class="card-images">
+              <div>
                 <strong>Imágenes:</strong>
-                <ul>
+                <div class="d-flex flex-wrap justify-content-center gap-4 mt-3">
                   {{#each product.thumbnails}}
-                    <li><img
-                        src="{{this}}"
-                        alt="Imagen del producto"
-                        class="product-image"
-                      /></li>
+                    <img
+                      src="{{this}}"
+                      alt="Imagen del producto"
+                      class="product-image"
+                      style="height:10rem; width: 10rem;"
+                    />
                   {{/each}}
-                </ul>
+                </div>
               </div>
             {{/if}}
           </div>

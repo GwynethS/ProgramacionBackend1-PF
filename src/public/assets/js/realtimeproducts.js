@@ -68,16 +68,16 @@ socket.on("realTimeProductList", (productList) => {
               product.status ? "Active" : "Inactive"
             }</p>
           </div>
-          <div class="card-images mt-3">
-            <strong>Images:</strong>
-            <ul class="list-unstyled">
+          <div>
+            <strong>Imágenes:</strong>
+            <div class="d-flex flex-wrap justify-content-center gap-4 mt-3">
               ${product.thumbnails
                 .map(
                   (img) =>
-                    `<li><img src="${img}" alt="Product image" class="product-image" width="100"></li>`
+                    `<img src="${img}" alt="Product image" class="product-image" style="height:10rem; width: 10rem;" />`
                 )
                 .join("")}
-            </ul>
+            </div>
           </div>
           <button class="btn btn-danger w-100 mt-3 delete-btn" data-id="${
             product._id

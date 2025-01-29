@@ -35,33 +35,10 @@ a {
   align-items: center;
 }
 
-.card-images ul {
-  padding: 0;
-  list-style-type: none;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.card-images li {
-  display: inline-block;
-}
-
 .product-image {
   object-fit: cover;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   object-fit: cover;
   object-position: center;
-}
-
-#product-detail .product-image {
-  width: 10rem;
-  height: 10rem;
-}
-
-#cart-list .product-image {
-  width: 6.5rem;
-  height: 6.5rem;
 }
