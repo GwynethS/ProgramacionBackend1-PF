@@ -13,7 +13,7 @@
             <p><strong>Stock:</strong> {{this.stock}} unidades</p>
             <p><strong>Category:</strong> {{this.category}}</p>
             <p><strong>Code:</strong> {{this.code}}</p>
-            <p><strong>Status:</strong> {{this.status}}</p>
+            <p><strong>Status:</strong> {{#if this.status}}Active{{else}}Inactive{{/if}}</p>
           </div>
           <div>
             <strong>Imágenes:</strong>

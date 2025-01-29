@@ -18,12 +18,12 @@ a {
 }
 
 #product-list .card {
-  height: 30rem;
+  height: 35rem;
   cursor: pointer;
 }
 
 #product-list .card-img-top {
-  height: 15rem;
+  height: 20rem;
   object-fit: cover;
   object-position: center;
 }

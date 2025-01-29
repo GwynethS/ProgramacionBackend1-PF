@@ -9,7 +9,7 @@
     <p><strong>Stock:</strong> {{product.stock}} unidades</p>
     <p><strong>Category:</strong> {{product.category}}</p>
     <p><strong>Code:</strong> {{product.code}}</p>
-    <p><strong>Status:</strong> {{product.status}}</p>
+    <p><strong>Status:</strong> {{#if product.status}}Active{{else}}Inactive{{/if}}</p>
   </div>
 
   {{#if product.thumbnails.length}}
