@@ -1,18 +1,22 @@
 document.addEventListener("DOMContentLoaded", async () => {
+  await loadProducts(); // 👈 Llamamos a la función para cargar productos con paginación
+});
+
+async function loadProducts(page = 1) {
   try {
-    const response = await fetch("/api/products");
+    const response = await fetch(`/api/products?page=${page}`);
     const data = await response.json();
 
     if (data.status === "success") {
       renderProducts(data.payload);
-      // renderPagination(data);
+      renderPagination(data);
     } else {
       console.error("No products found");
     }
   } catch (error) {
     console.error("Error fetching products:", error);
   }
-});
+}
 
 function renderProducts(products) {
   const productContainer = document.getElementById("product-list");
@@ -35,9 +39,9 @@ function renderProducts(products) {
             <p class="card-text">${product.description}</p>
             <p class="card-text"><strong>Price: $${product.price}</strong></p>
           </div>
-          <button class="btn btn-primary add-to-cart-btn" data-id=${
-            product._id
-          }>Add to cart <i class="fa-solid fa-plus"></i></button>
+          <button class="btn btn-primary add-to-cart-btn" data-id=${product._id}>
+            Add to cart <i class="fa-solid fa-plus"></i>
+          </button>
         </div>
       </div>
     `;
@@ -46,18 +50,53 @@ function renderProducts(products) {
       window.location.href = `/products/${product._id}`;
     });
 
-    productElement
-      .querySelector(".add-to-cart-btn")
-      .addEventListener("click", (e) => {
-        e.stopPropagation();
+    productElement.querySelector(".add-to-cart-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      const productId = e.target.getAttribute("data-id");
+      if (productId) addCartProduct(productId);
+    });
 
-        const productId = e.target.getAttribute("data-id");
-
-        if (productId) addCartProduct(productId);
-      });
     productContainer.appendChild(productElement);
   });
 }
+
+function renderPagination(data) {
+  const paginationContainer = document.getElementById("pagination");
+  paginationContainer.innerHTML = "";
+
+  const { totalPages, prevPage, nextPage, page, hasPrevPage, hasNextPage, prevLink, nextLink } = data;
+
+  let paginationHTML = `<nav><ul class="pagination justify-content-center">`;
+
+  if (hasPrevPage) {
+    paginationHTML += `<li class="page-item"><a class="page-link" href="#" data-page="${prevPage}">Prev</a></li>`;
+  }
+
+  for (let i = 1; i <= totalPages; i++) {
+    paginationHTML += `<li class="page-item ${i === page ? "active" : ""}">
+      <a class="page-link" href="#" data-page="${i}">${i}</a>
+    </li>`;
+  }
+
+  if (hasNextPage) {
+    paginationHTML += `<li class="page-item"><a class="page-link" href="#" data-page="${nextPage}">Next</a></li>`;
+  }
+
+  paginationHTML += `</ul></nav>`;
+
+  paginationContainer.innerHTML = paginationHTML;
+
+  document.querySelectorAll("#pagination a").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const selectedPage = e.target.getAttribute("data-page");
+      if (selectedPage) {
+        loadProducts(selectedPage);
+      }
+    });
+  });
+}
+
 
 async function addCartProduct(productId) {
   let cartId = sessionStorage.getItem("cartId");
