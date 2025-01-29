@@ -35,23 +35,6 @@ a {
   align-items: center;
 }
 
-.delete-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: transparent;
-  color: red;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 5px;
-}
-
-.delete-btn:hover {
-  color: darkred;
-}
-
 .card-images ul {
   padding: 0;
   list-style-type: none;
@@ -81,45 +64,4 @@ a {
 #cart-list .product-image {
   width: 6.5rem;
   height: 6.5rem;
-}
-
-form {
-  width: 25rem;
-  height: fit-content;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-form label {
-  display: block;
-  font-weight: bold;
-}
-
-form input,
-textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  resize: none;
-}
-
-form button {
-  padding: 0.7rem 1rem;
-  background-color: #a1b4ff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-form button:hover {
-  background-color: #8da0ed;
 }

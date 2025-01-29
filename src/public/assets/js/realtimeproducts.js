@@ -8,9 +8,15 @@ document
     const formData = new FormData();
 
     formData.append("title", document.getElementById("title").value);
-    formData.append("description", document.getElementById("description").value);
+    formData.append(
+      "description",
+      document.getElementById("description").value
+    );
     formData.append("code", document.getElementById("code").value);
-    formData.append("price", parseFloat(document.getElementById("price").value));
+    formData.append(
+      "price",
+      parseFloat(document.getElementById("price").value)
+    );
     formData.append("stock", parseInt(document.getElementById("stock").value));
     formData.append("category", document.getElementById("category").value);
 
@@ -46,35 +52,39 @@ socket.on("realTimeProductList", (productList) => {
 
   productList.forEach((product) => {
     const card = document.createElement("div");
-    card.classList.add("card");
+    card.classList.add("col-lg-6");
 
     card.innerHTML = `
-      <div class="card-header">
-        <button class="delete-btn" data-id="${product._id}" id="btn-delete-${
-      product._id
-    }" type="button">Eliminar</button>
-      </div>
-
-      <h2 class="card-title">${product.title}</h2>
-      <p><strong>Descripción:</strong> ${product.description}</p>
-      <p><strong>Precio:</strong> $${product.price}</p>
-      <p><strong>Stock:</strong> ${product.stock} unidades</p>
-      <p><strong>Categoría:</strong> ${product.category}</p>
-      <p><strong>Código:</strong> ${product.code}</p>
-
-      <div class="card-images">
-        <strong>Imágenes:</strong>
-        <ul>
-          ${product.thumbnails
-            .map(
-              (img) =>
-                `<li><img src="${img}" alt="Imagen del producto" class="product-image" width="100"></li>`
-            )
-            .join("")}
-        </ul>
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title text-center">${product.title}</h4>
+          <div class="mt-3">
+            <p><strong>Description:</strong> ${product.description}</p>
+            <p><strong>Price:</strong> $${product.price}</p>
+            <p><strong>Stock:</strong> ${product.stock} units</p>
+            <p><strong>Category:</strong> ${product.category}</p>
+            <p><strong>Code:</strong> ${product.code}</p>
+            <p><strong>Status:</strong> ${
+              product.status ? "Active" : "Inactive"
+            }</p>
+          </div>
+          <div class="card-images mt-3">
+            <strong>Images:</strong>
+            <ul class="list-unstyled">
+              ${product.thumbnails
+                .map(
+                  (img) =>
+                    `<li><img src="${img}" alt="Product image" class="product-image" width="100"></li>`
+                )
+                .join("")}
+            </ul>
+          </div>
+          <button class="btn btn-danger w-100 mt-3 delete-btn" data-id="${
+            product._id
+          }" id="btn-delete-${product._id}" type="button">Eliminar</button>
+        </div>
       </div>
     `;
-
     productListElement.appendChild(card);
 
     const btnDelete = document.getElementById(`btn-delete-${product._id}`);
