@@ -6,6 +6,10 @@ Este proyecto es una API RESTful desarrollada en Node.js con Express que permite
 
 La API proporciona un conjunto de funcionalidades para manejar productos y carritos, incluyendo la creación, listado, actualización y eliminación de productos, así como la gestión de carritos y la adición de productos a estos.
 
+## ⚙️ Environment
+
+MONGO_URL="mongodb+srv://GwynethS:HYzs8Rc7Vt1cyFmN@coderback.2iv25.mongodb.net/?retryWrites=true&w=majority&appName=CoderBack"
+
 ## ✅ Funcionalidades
 
 #### Rutas de Productos (/api/products/):
